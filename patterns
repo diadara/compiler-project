@@ -1,0 +1,69 @@
+| Pattern                       | Token          |
+
+| :                             | TK_ASSIGNOP    |
+| #                             | TK_COMMENT     |
+| [a-z][a-z] *                  | TK_FIELDID     |
+| [a-z/A-Z/_/][a-z/A-Z/0-9/_] * | TK_ID          |
+| [0-9][0-9]*                   | TK_NUM         |
+| [0-9][0-9]* .[0-9][0-9]       | TK_RNUM        |
+| [a-z/A-Z/0-9/:/?/,/./_/ /]    | TK_CHR         |
+| [a-z/A-Z/0-9/:/?/,/./_/ /]+   | TK_STRING      |
+| [a-z/A-Z/_/][a-z/A-Z/0-9/_] * | TK_FUNID       |
+| [a-z/A-Z/_/][a-z/A-Z/0-9/_] * | TK_RECORDID    |
+| [a-z/A-Z/_/][a-z/A-Z/0-9/_] * | TK_ARRAYID     |
+| [a-z/A-Z/_/][a-z/A-Z/0-9/_] * | TK_MAPID       |
+| [a-z/A-Z/_/][a-z/A-Z/0-9/_] * | TK_MAPFIELD    |
+| map_insert                    | TK_MAPINSERT   |
+| map_remove                    | TK_MAPREMOVE   |
+| assign                        | TK_ASSIGN      |
+| var                           | TK_VAR         |
+| main                          | TK_MAIN        |
+| end_main                      | TK_ENDMAIN     |
+| int                           | TK_INT         |
+| real                          | TK_REAL        |
+| If                            | TK_IF          |
+| end_if                        | TK_ENDIF       |
+| global                        | TK_GLOBAL      |
+| input                         | TK_INPUT       |
+| output                        | TK_OUTPUT      |
+| while                         | TK_WHILE       |
+| end_while                     | TK_ENDWHILE    |
+| int                           | TK_INT         |
+| real                          | TK_REAL        |
+| char                          | TK_CHAR        |
+| function                      | TK_FUNCTION    |
+| end_function                  | TK_ENDFUNCTION |
+| elseif                        | TK_ELSEIF      |
+| else                          | TK_ELSE        |
+| record                        | TK_RECORD      |
+| end_record                    | TK_ENDRECORD   |
+| array                         | TK_ARRAY       |
+| map                           | TK_MAP         |
+| get                           | TK_GET         |
+| put                           | TK_PUT         |
+| puts                          | TK_PUTS        |
+| return                        | TK_RETURN      |
+| break                         | TK_BREAK       |
+| call                          | TK_CALL        |
+| [                             | TK_SQL         |
+| ]                             | TK_SQR         |
+| ;                             | TK_SEM         |
+| ,                             | TK_COMMA       |
+| .                             | TK_DOT         |
+| (                             | TK_OP          |
+| )                             | TK_CL          |
+| “                             | TK_DQT         |
+| ‘                             | TK_SQT         |
+| +                             | TK_PLUS        |
+| *                             | TK_MUL         |
+| /                             | TK_DIV         |
+| %                             | TK_MOD         |
+| &                             | TK_AND         |
+| |                             | TK_OR          |
+| !                             | TK_NOT         |
+| <                             | TK_LT          |
+| <=                            | TK_LE          |
+| ==                            | TK_EQ          |
+| >                             | TK_GT          |
+| >=                            | TK_LE          |
+| !=                            | TK_NE          |
