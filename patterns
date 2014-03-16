@@ -19,9 +19,7 @@
 | var                           | TK_VAR         |
 | main                          | TK_MAIN        |
 | end_main                      | TK_ENDMAIN     |
-| int                           | TK_INT         |
-| real                          | TK_REAL        |
-| If                            | TK_IF          |
+| if                            | TK_IF          |
 | end_if                        | TK_ENDIF       |
 | global                        | TK_GLOBAL      |
 | input                         | TK_INPUT       |
@@ -52,8 +50,6 @@
 | .                             | TK_DOT         |
 | (                             | TK_OP          |
 | )                             | TK_CL          |
-| “                             | TK_DQT         |
-| ‘                             | TK_SQT         |
 | +                             | TK_PLUS        |
 | *                             | TK_MUL         |
 | /                             | TK_DIV         |
@@ -65,5 +61,5 @@
 | <=                            | TK_LE          |
 | ==                            | TK_EQ          |
 | >                             | TK_GT          |
-| >=                            | TK_LE          |
+| >=                            | TK_GE          |
 | !=                            | TK_NE          |
