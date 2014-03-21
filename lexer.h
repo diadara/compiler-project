@@ -55,6 +55,7 @@ typedef enum
     TK_DQT,       
     TK_SQT,       
     TK_PLUS,      
+    TK_MINUS,
     TK_MUL,       
     TK_DIV,       
     TK_MOD,       
@@ -66,7 +67,8 @@ typedef enum
     TK_EQ,        
     TK_GT,        
     TK_GE,        
-    TK_NE,          
+    TK_NE,
+    TK_COMMENT,
     TK_ERROR
   } symbol;
 
@@ -108,10 +110,12 @@ char getNextChar(int,int*);
 
 // lexer API
 void initLex(char * filename);
-tokenlistp getTokenlist(char * inputfile);
-tokenp getNextToken();
-
+tokenlistp getTokenlist(int fp, keywordTable kt);
+tokenp getNextToken(int fp, keywordTable kt, bool *error, int * linenumber);
+void printTokenList(tokenlistp tl);
 //lexer helper function
   tokenp check_type(char * lexeme);
 #endif
+
+
 

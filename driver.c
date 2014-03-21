@@ -8,22 +8,21 @@
 
 
 int main(int argc, char* argv[])
-{int fp,back=0;
+{
+  int fp;
   if(argc == 2)
      fp = open(argv[1],O_RDONLY);
   else
     { printf("no input file given");
       exit(1);
     }
-  char c=' ';
-  while(c != EOF)
-    {
-      printf("%c",c);
-      c = getNextChar(fp,&back);
-    }
+  
     
 
   keywordTable kt = createKeywordTable();
+  tokenlistp tl = getTokenlist(fp,kt);
+  printTokenList(tl);
+
   /* int i; */
   /* for(i = 0;i<60;i++) */
   /*   printf("%s %d\n", kt[i].keyword, kt[i].s); */
