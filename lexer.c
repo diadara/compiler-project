@@ -127,7 +127,9 @@ keywordTable createKeywordTable()
   return kt;
 }
 
-bool isKeyword(keywordTable kt, char * lexeme)
+
+/* returns -1 if not a keyword else returns the keywords symbol */
+int isKeyword(keywordTable kt, char * lexeme)
 {
 int hval,hashkey=60;//twice the no. of keywords
     hval=hash(lexeme,hashkey);
@@ -135,11 +137,11 @@ int hval,hashkey=60;//twice the no. of keywords
     {
         if(kt[hval].present==FALSE)
         {
-            return FALSE;
+            return -1;
         }
         else if(!strcmp(lexeme,kt[hval].keyword))
         {
-          return TRUE;
+          return kt[hval].s;
         }
         hval++;
         hval=hval%hashkey;
@@ -267,6 +269,16 @@ tokenp getNextToken(int fp, keywordTable kt, bool *error, int * linenumber)
               state = 8;
               fin_token(TK_SQT);
             }
+          else if(isalpha(c) || c == '_')
+            {
+              lexeme[i++] = c;
+              state = 11;
+            }
+          else if(isdigit(c))
+            {
+              lexeme[i++] = c;
+              state = 12;
+            }
           else
             {lexeme[i++] = c;
               *error =1;        /* we do not recognize the character */
@@ -375,6 +387,57 @@ tokenp getNextToken(int fp, keywordTable kt, bool *error, int * linenumber)
             lexeme[i++] = c;
             state = 1;
             fin_token(TK_SQT);
+          }
+          break;
+        case 11:
+          if(isalnum(c) || c == '_')
+            lexeme[i++] = c;
+          else
+            {
+              back = 1;
+              int  keyword = isKeyword(kt, lexeme); /* -1 if
+                                                           keyword
+                                                           else a symbol */
+              if(keyword < 0)
+                {
+                  state = 1;
+                  fin_token(TK_ID);
+                }
+              else
+                {
+                  state = 1;    /* TODO : handle different types of
+                                   ids according to keywords that
+                                   comes before */
+                  fin_token(keyword);
+                }
+            }
+          break;
+        case 12: // number case
+          if(isdigit(c))
+            {
+              lexeme[i++] = c;
+            }
+          else if(c == '.')
+            {
+              lexeme[i++] = c;
+              state = 13 ;      /* real number state */
+            }
+          else
+            {
+              state = 1;
+              back = 1;
+              fin_token(TK_NUM);
+            }
+          break;
+        case 13:
+          if(isdigit(c))
+            {
+              lexeme[i++] = c;
+            }
+          else{
+            back = 1;
+            state = 1;
+            fin_token(TK_RNUM);
           }
           break;
         }//switch
