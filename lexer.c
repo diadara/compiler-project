@@ -254,6 +254,19 @@ tokenp getNextToken(int fp, keywordTable kt, bool *error, int * linenumber)
               if(c == '\n')
                 (*linenumber) ++;
             }
+          else if(c == '"')
+            {
+              lexeme[i++]= c;
+              state = 7;
+              fin_token(TK_DQT);
+              
+            }
+          else if(c == '\'')
+            {
+              lexeme[i++] = c;
+              state = 8;
+              fin_token(TK_SQT);
+            }
           else
             {lexeme[i++] = c;
               *error =1;        /* we do not recognize the character */
@@ -329,6 +342,41 @@ tokenp getNextToken(int fp, keywordTable kt, bool *error, int * linenumber)
               lexeme[i++] = c;
             }
           break;
+        case 7:
+          if (c != '"')
+            {
+              lexeme[i++] = c;
+              if(c =='\n')
+                (*linenumber)++;
+            }
+          else
+            {back = 1;
+              state = 9;
+              fin_token(TK_STRING);
+            }
+          
+          break;
+        case 8:          /* single quote state */
+          lexeme[i++] = c;
+          state = 10;
+          fin_token(TK_CHAR);
+          break;
+        case 9:                 /* finished reading a string */
+          lexeme[i++] = c;
+          state = 1;
+          fin_token(TK_DQT);
+          break;
+        case 10:
+          if (c != '\'')
+            {lexeme[i++] = c;
+              fin_token(TK_ERROR);
+            }
+          else{
+            lexeme[i++] = c;
+            state = 1;
+            fin_token(TK_SQT);
+          }
+          break;
         }//switch
 
 
@@ -351,8 +399,10 @@ tokenlistp getTokenlist(int fp, keywordTable kt)
   tokenp t = getNextToken(fp,kt,&error, &linenumber);
   while(t != NULL)
     {
-
-      //      printf("%d \n", t->s);
+#ifdef DEBUG
+      printf("%s \n", symbolToStr(t->s));
+#endif
+      
       tokenlistp temp = malloc(sizeof *temp);
       temp->t = t;
       temp->linenumber = linenumber;
@@ -388,8 +438,6 @@ char * symbolToStr(symbol s)
      return "TK_NUM";
    case TK_RNUM:
      return "TK_RNUM";
-   case TK_CHR:
-     return "TK_CHR";
    case TK_STRING:
      return "TK_STRING";
    case TK_FUNID:

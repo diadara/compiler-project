@@ -8,7 +8,6 @@ typedef enum
     TK_ID,        
     TK_NUM,       
     TK_RNUM,      
-    TK_CHR,       
     TK_STRING,    
     TK_FUNID,     
     TK_RECORDID,  
@@ -69,6 +68,7 @@ typedef enum
     TK_GE,        
     TK_NE,
     TK_COMMENT,
+    
     TK_ERROR
   } symbol;
 
@@ -118,4 +118,5 @@ void printTokenList(tokenlistp tl);
 #endif
 
 
-
+// helper functions
+char * symbolToStr(symbol s);

@@ -1,5 +1,7 @@
 ! = * &
 * + /
+"some text in a string"
++ = 'a' # single qouted character
 () # this is a comment
 <=
 #this is a full line comment
