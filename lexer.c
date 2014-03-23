@@ -226,6 +226,21 @@ tokenp getNextToken(int fp, keywordTable kt, bool *error, int * linenumber)
               lexeme[i++] = c;
               fin_token(TK_OR);
             }
+          else if(c == '[')
+            {
+              lexeme[i++] = c;
+              fin_token(TK_SQL);
+            }
+          else if(c == ']')
+            {
+              lexeme[i++] = c;
+              fin_token(TK_SQR);
+            }
+          else if(c == '.')
+            {
+              lexeme[i++] = c;
+              fin_token(TK_DOT);
+            }
           else if(c == '!')
             {
               lexeme[i++] = c;
