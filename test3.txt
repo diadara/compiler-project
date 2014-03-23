@@ -1,0 +1,31 @@
+record complex
+    int x;
+    int y;
+end_record
+
+global var record complex a;
+
+assign a.x : 1;
+assign a.y : 1;
+
+function complex_add
+    input[record complex a, record complex b]
+    output[record complex c]
+    assign c.x : a.x + b.x;
+    assign c.y : a.y + b.y
+end_function
+
+main
+
+    var record complex a,b,c;
+
+    assign a.x : 1;
+    assign a.y : 1;
+    assign b.x : 2;
+    assign b.y : 2;
+
+    call complex_add[a,b][c];
+
+
+end_main
+
