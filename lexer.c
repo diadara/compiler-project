@@ -420,9 +420,7 @@ tokenp getNextToken(int fp, keywordTable kt, bool *error, int * linenumber)
                 }
               else
                 {
-                  state = 1;    /* TODO : handle different types of
-                                   ids according to keywords that
-                                   comes before */
+                  state = 1;    
                   fin_token(keyword);
                 }
             }
@@ -638,6 +636,131 @@ char * symbolToStr(symbol s)
      return "TK_COMMENT";
    case TK_ERROR:
      return "TK_ERROR";
+   case program:
+     return "program";
+   case typeDefinition_s:
+     return "typeDefinition_s";
+   case mainFunction:
+     return "mainFunction";
+   case typeDefinition:
+     return "typeDefinition";
+   case fieldDefinition_s:
+     return "fieldDefinition_s";
+   case fieldDefinition:
+     return "fieldDefinition";
+   case eps:
+     return "eps";
+   case moreFields:
+     return "moreFields";
+   case primitiveDatatype:
+     return "primitiveDatatype";
+   case moreField_ID:
+     return "moreField_ID";
+   case globalStatements:
+     return "globalStatements";
+   case globalDeclare:
+     return "globalDeclare";
+   case globalAssign:
+     return "globalAssign";
+   case dataType:
+     return "dataType";
+   case var:
+     return "var";
+   case otherFunctions:
+     return "otherFunctions";
+   case function:
+     return "function";
+   case input_par:
+     return "input_par";
+   case output_par:
+     return "output_par";
+   case stmt_s:
+     return "stmt_s";
+   case parameter_list:
+     return "parameter_list";
+   case remaining_list:
+     return "remaining_list";
+   case constructedDatatype:
+     return "constructedDatatype";
+   case declaration_s:
+     return "declaration_s";
+   case otherStmts:
+     return "otherStmts";
+   case all_declaration:
+     return "all_declaration";
+   case declaration:
+     return "declaration";
+   case array_declaration:
+     return "array_declaration";
+   case map_declaration:
+     return "map_declaration";
+   case more_IDs:
+     return "more_IDs";
+   case more_array_IDs:
+     return "more_array_IDs";
+   case moreMapID:
+     return "moreMapID";
+   case stmt:
+     return "stmt";
+   case assignmentStmt:
+     return "assignmentStmt";
+   case iterativeStmt:
+     return "iterativeStmt";
+   case ioStmt:
+     return "ioStmt";
+   case funCallStmt:
+     return "funCallStmt";
+   case mapStmt:
+     return "mapStmt";
+   case SingleOrRecOrArrayId:
+     return "SingleOrRecOrArrayId";
+   case arithmeticExpression:
+     return "arithmeticExpression";
+   case Other_Id:
+     return "Other_Id";
+   case numorid:
+     return "numorid";
+   case more_variables:
+     return "more_variables";
+   case operator:
+     return "operator";
+   case idList:
+     return "idList";
+   case more_ids:
+     return "more_ids";
+   case booleanExpression:
+     return "booleanExpression";
+   case conditionalStmt:
+     return "conditionalStmt";
+   case else$elseif:
+     return "else$elseif";
+   case elseifs:
+     return "elseifs";
+   case Else:
+     return "Else";
+   case elseif:
+     return "elseif";
+   case allVar:
+     return "allVar";
+   case Other_Var:
+     return "Other_Var";
+   case bExp:
+     return "bExp";
+   case variable:
+     return "variable";
+   case Op:
+     return "Op";
+   case logicalOp:
+     return "logicalOp";
+   case relationalOp:
+     return "relationalOp";
+   case Other_Variable:
+     return "Other_Variable";
+   case mapAdd:
+     return "mapAdd";
+   case mapDelete:
+     return "mapDelet";
+
    }
 }
 
