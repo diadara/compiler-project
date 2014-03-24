@@ -1,1 +1,4 @@
 lex
+compile*
+*.o
+*.out
