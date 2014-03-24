@@ -648,8 +648,8 @@ char * symbolToStr(symbol s)
      return "fieldDefinition_s";
    case fieldDefinition:
      return "fieldDefinition";
-   case eps:
-     return "eps";
+   case TK_EPS:
+     return "TK_EPS";
    case moreFields:
      return "moreFields";
    case primitiveDatatype:
