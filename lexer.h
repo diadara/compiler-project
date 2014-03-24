@@ -68,8 +68,69 @@ typedef enum
     TK_GE,        
     TK_NE,
     TK_COMMENT,
-    
-    TK_ERROR
+    TK_ERROR,
+    program,
+    typeDefinition_s,
+    mainFunction,
+    typeDefinition,
+    fieldDefinition_s,
+    fieldDefinition,
+    eps,
+    moreFields,
+    primitiveDatatype,
+    moreField_ID,
+    globalStatements,
+    globalDeclare,
+    globalAssign,
+    dataType,
+    var,
+    otherFunctions,
+    function,
+    input_par,
+    output_par,
+    stmt_s,
+    parameter_list,
+    remaining_list,
+    constructedDatatype,
+    declaration_s,
+    otherStmts,
+    all_declaration,
+    declaration,
+    array_declaration,
+    map_declaration,
+    more_IDs,
+    more_array_IDs,
+    moreMapID,
+    stmt,
+    assignmentStmt,
+    iterativeStmt,
+    ioStmt,
+    funCallStmt,
+    mapStmt,
+    SingleOrRecOrArrayId,
+    arithmeticExpression,
+    Other_Id,
+    numorid,
+    more_variables,
+    operator,
+    idList,
+    more_ids,
+    booleanExpression,
+    conditionalStmt,
+    else$elseif,
+    elseifs,
+    Else,
+    elseif,
+    allVar,
+    Other_Var,
+    bExp,
+    variable,
+    Op,
+    logicalOp,
+    relationalOp,
+    Other_Variable,
+    mapAdd,
+    mapDelete
   } symbol;
 
 typedef enum {FALSE, TRUE} bool;
@@ -115,8 +176,13 @@ tokenp getNextToken(int fp, keywordTable kt, bool *error, int * linenumber);
 void printTokenList(tokenlistp tl);
 //lexer helper function
   tokenp check_type(char * lexeme);
-#endif
 
 
 // helper functions
+
+
 char * symbolToStr(symbol s);
+int hash(char *keyword, int hashkey);//hash function
+
+#endif
+
