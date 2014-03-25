@@ -80,7 +80,7 @@ conditionalStmt TK_IF booleanExpression stmt otherStmts else$elseif TK_ENDIF  .
 else$elseif elseifs Else  .
 elseifs elseif elseifs  .
 elseifs eps .
-elseif TK_ELSEIF booleanexpression stmt otherStmts  .
+elseif TK_ELSEIF booleanExpression stmt otherStmts  .
 Else TK_ELSE stmt otherStmts  .
 Else eps .
 ioStmt TK_GET allVar TK_SEM  .
@@ -117,4 +117,4 @@ relationalOp TK_NE  .
 mapStmt mapAdd .
 mapStmt mapDelete  .
 mapAdd TK_MAPINSERT TK_ID TK_OP TK_ID TK_COMMA variable TK_CL TK_SEM .
-mapDelete TK_MAPREMOVE TK_ID TK_OP TK_IDTK_CL TK_SEM .
+mapDelete TK_MAPREMOVE TK_ID TK_OP TK_ID TK_CL TK_SEM .

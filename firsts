@@ -1,0 +1,62 @@
+program  , 
+typeDefinition_s  , 
+typeDefinition  , 
+fieldDefinition_s  , 
+fieldDefinition TK_VAR  , TK_VAR TK_VAR dataType 
+moreField_ID TK_COMMA  , TK_SEM 
+moreFields TK_VAR  , 
+primitiveDatatype TK_INT TK_REAL TK_CHAR  , TK_ID 
+globalStatements TK_GLOBAL  , 
+globalDeclare TK_GLOBAL  , TK_ASSIGN TK_ASSIGN dataType 
+globalAssign TK_ASSIGN  , 
+var TK_NUM TK_RNUM TK_SQT  , TK_SEM 
+otherFunctions TK_FUNCTION  , 
+function TK_FUNCTION  , TK_FUNCTION TK_FUNCTION dataType 
+input_par TK_INPUT  , TK_OUTPUT 
+output_par TK_OUTPUT  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_VAR TK_IF TK_WHILE TK_ARRAY TK_MAP TK_GET TK_PUT TK_PUTS TK_CALL TK_CALL TK_ENDFUNCTION 
+parameter_list TK_VAR  , TK_SQR 
+dataType TK_INT TK_REAL TK_CHAR TK_RECORD  , TK_ID 
+constructedDatatype TK_RECORD  , TK_ID 
+remaining_list TK_COMMA  , TK_SQR TK_SQR 
+mainFunction TK_MAIN  , TK_ASSIGNOP 
+stmt_s TK_VAR TK_ARRAY TK_MAP TK_MAP TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_IF TK_WHILE TK_GET TK_PUT TK_PUTS TK_CALL  , TK_ENDFUNCTION TK_ENDMAIN 
+declaration_s TK_VAR TK_ARRAY TK_MAP  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_IF TK_WHILE TK_GET TK_PUT TK_PUTS TK_CALL TK_CALL TK_ENDMAIN TK_ENDFUNCTION 
+all_declaration TK_VAR TK_ARRAY TK_MAP  , TK_VAR TK_ARRAY TK_MAP declaration array_declaration map_declaration more_IDs assignmentStmt Operator IterativeStmt ioStmt allVar Other_Var bExp bExp TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_ENDMAIN TK_IF TK_WHILE TK_ENDFUNCTION TK_GET TK_PUT TK_PUTS TK_CALL dataType 
+declaration TK_VAR  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_VAR TK_ENDMAIN TK_IF TK_WHILE TK_ENDFUNCTION TK_ARRAY TK_MAP TK_GET TK_PUT TK_PUTS TK_CALL dataType declaration array_declaration map_declaration more_IDs assignmentStmt Operator IterativeStmt ioStmt allVar Other_Var bExp bExp 
+array_declaration TK_ARRAY  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_VAR TK_ENDMAIN TK_IF TK_WHILE TK_ENDFUNCTION TK_ARRAY TK_MAP TK_GET TK_PUT TK_PUTS TK_CALL dataType declaration array_declaration map_declaration more_IDs assignmentStmt Operator IterativeStmt ioStmt allVar Other_Var bExp bExp 
+map_declaration TK_MAP  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_VAR TK_ENDMAIN TK_IF TK_WHILE TK_ENDFUNCTION TK_ARRAY TK_MAP TK_GET TK_PUT TK_PUTS TK_CALL dataType declaration array_declaration map_declaration more_IDs assignmentStmt Operator IterativeStmt ioStmt allVar Other_Var bExp bExp 
+moreMapID TK_COMMA  , TK_SEM 
+more_array_IDs TK_COMMA  , TK_SEM 
+more_IDs TK_COMMA  , TK_SEM 
+otherStmts TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_IF TK_WHILE TK_GET TK_PUT TK_PUTS TK_CALL  , TK_ENDMAIN TK_ENDFUNCTION TK_ENDWHILE TK_ELSEIF TK_ELSE TK_ELSE TK_ENDIF 
+stmt TK_ASSIGN TK_WHILE TK_IF TK_GET TK_PUT TK_PUTS TK_CALL TK_MAPINSERT TK_MAPREMOVE  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_IF TK_WHILE TK_GET TK_PUT TK_PUTS TK_CALL more_IDs SingleOrRecOrArrayId funCallStmt IterativeStmt conditionalStmt elseif elseif TK_ENDMAIN TK_ENDIF TK_ENDWHILE TK_ENDFUNCTION TK_ELSEIF TK_ELSE dataType 
+assignmentStmt TK_ASSIGN  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_ENDMAIN TK_IF TK_ENDIF TK_WHILE TK_ENDWHILE TK_ENDFUNCTION TK_ELSEIF TK_ELSE TK_GET TK_PUT TK_PUTS TK_CALL dataType more_IDs SingleOrRecOrArrayId funCallStmt IterativeStmt conditionalStmt elseif elseif 
+SingleOrRecOrArrayId TK_ID  , TK_ASSIGNOP 
+Other_Id TK_DOT TK_SQL  , TK_ASSIGNOP TK_ASSIGNOP 
+arithmeticExpression TK_OP TK_ID TK_NUM TK_RNUM TK_SQT  , TK_ASSIGNOP TK_SEM TK_CL 
+more_variables TK_ID TK_NUM TK_RNUM TK_OP TK_SQT TK_SQT TK_PLUS TK_MINUS TK_MUL TK_DIV TK_MOD  , TK_SEM TK_CL 
+Operator TK_PLUS TK_MUL TK_MINUS TK_DIV TK_MOD  , TK_ID TK_NUM TK_RNUM TK_OP TK_SQT Other_Variable mapAdd mapAdd TK_SEM TK_CL dataType 
+funCallStmt TK_CALL  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_ENDMAIN TK_IF TK_ENDIF TK_WHILE TK_ENDWHILE TK_ENDFUNCTION TK_ELSEIF TK_ELSE TK_GET TK_PUT TK_PUTS TK_CALL dataType more_IDs SingleOrRecOrArrayId funCallStmt IterativeStmt conditionalStmt elseif elseif 
+idList TK_ID  , TK_SQR 
+more_ids TK_COMMA  , TK_SQR TK_SQR 
+IterativeStmt TK_WHILE  , TK_ASSIGNOP TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_ENDMAIN TK_IF TK_ENDIF TK_WHILE TK_ENDWHILE TK_ENDFUNCTION TK_ELSEIF TK_ELSE TK_GET TK_PUT TK_PUTS TK_CALL dataType more_IDs SingleOrRecOrArrayId funCallStmt IterativeStmt conditionalStmt elseif elseif 
+conditionalStmt TK_IF  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_ENDMAIN TK_IF TK_ENDIF TK_WHILE TK_ENDWHILE TK_ENDFUNCTION TK_ELSEIF TK_ELSE TK_GET TK_PUT TK_PUTS TK_CALL dataType more_IDs SingleOrRecOrArrayId funCallStmt IterativeStmt conditionalStmt elseif elseif elseif 
+elseif TK_ASSIGNOP  , 
+Elseandelseif TK_ELSEIF TK_ELSEIF TK_ELSE  , TK_ENDIF 
+Elseifs TK_ELSEIF  , TK_ELSE TK_ELSE TK_ENDIF 
+Elseif TK_ELSEIF  , TK_ELSEIF TK_ELSEIF dataType SingleOrRecOrArrayId elseif TK_ENDIF TK_ELSE 
+Else TK_ELSE  , TK_ENDIF 
+ioStmt TK_GET TK_PUT TK_PUTS  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_ENDMAIN TK_IF TK_ENDIF TK_WHILE TK_ENDWHILE TK_ENDFUNCTION TK_ELSEIF TK_ELSE TK_GET TK_PUT TK_PUTS TK_CALL dataType more_IDs SingleOrRecOrArrayId funCallStmt IterativeStmt conditionalStmt elseif elseif 
+allVar TK_ID  , TK_SEM 
+Other_Var TK_DOT TK_SQL  , TK_SEM TK_SEM 
+numorid TK_NUM TK_ID  , TK_ASSIGNOP TK_SQR 
+booleanExpression TK_OP TK_ID TK_NUM TK_RNUM TK_SQT TK_NOT  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_IF TK_WHILE TK_GET TK_PUT TK_PUTS TK_CALL more_IDs assignmentStmt SingleOrRecOrArrayId Operator funCallStmt IterativeStmt conditionalStmt elseif ioStmt allVar Other_Var bExp bExp bExp bExp bExp bExp bExp bExp TK_ENDWHILE TK_ELSEIF TK_ELSE TK_ENDIF dataType dataType TK_CL TK_AND TK_OR TK_LT TK_LE TK_EQ TK_GT TK_GE TK_NE 
+bExp TK_CL TK_AND TK_OR TK_LT TK_LE TK_EQ TK_GT TK_GE TK_NE  , TK_ASSIGNOP TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_IF TK_ENDIF TK_WHILE TK_ENDWHILE TK_ELSEIF TK_ELSE TK_GET TK_PUT TK_PUTS TK_CALL TK_CL TK_AND TK_OR TK_LT TK_LE TK_EQ TK_GT TK_GE TK_NE dataType more_IDs assignmentStmt SingleOrRecOrArrayId Operator funCallStmt IterativeStmt conditionalStmt elseif ioStmt allVar Other_Var bExp bExp 
+Op TK_AND TK_OR TK_LT TK_LE TK_EQ TK_GT TK_GE TK_NE  , TK_ID TK_NUM TK_RNUM TK_OP TK_SQT TK_NOT declaration array_declaration map_declaration assignmentStmt SingleOrRecOrArrayId Operator funCallStmt conditionalStmt elseif ioStmt allVar Other_Var bExp mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd TK_CL 
+variable TK_ID TK_NUM TK_RNUM TK_SQT  , TK_ID TK_NUM TK_RNUM TK_OP TK_SQT TK_PLUS TK_MINUS TK_MUL TK_DIV TK_MOD Other_Variable mapAdd mapAdd TK_SEM TK_CL dataType TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_IF TK_ENDIF TK_WHILE TK_ENDWHILE TK_ELSEIF TK_ELSE TK_GET TK_PUT TK_PUTS TK_CALL TK_AND TK_OR TK_LT TK_LE TK_EQ TK_GT TK_GE TK_NE more_IDs assignmentStmt SingleOrRecOrArrayId Operator funCallStmt IterativeStmt conditionalStmt elseif ioStmt allVar Other_Var bExp 
+Other_Variable TK_SQL TK_DOT  , TK_ID TK_NUM TK_RNUM TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_IF TK_ENDIF TK_WHILE TK_ENDWHILE TK_ELSEIF TK_ELSE TK_GET TK_PUT TK_PUTS TK_CALL TK_SEM TK_OP TK_CL TK_SQT TK_PLUS TK_MINUS TK_MUL TK_DIV TK_MOD TK_AND TK_OR TK_LT TK_LE TK_EQ TK_GT TK_GE TK_NE more_IDs assignmentStmt SingleOrRecOrArrayId Operator funCallStmt IterativeStmt conditionalStmt elseif ioStmt allVar Other_Var bExp Other_Variable mapAdd mapAdd 
+logicalOp TK_AND TK_OR  , TK_ID TK_NUM TK_RNUM TK_OP TK_CL TK_SQT TK_NOT array_declaration map_declaration assignmentStmt SingleOrRecOrArrayId Operator funCallStmt conditionalStmt elseif ioStmt allVar Other_Var bExp mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd 
+relationalOp TK_LT TK_LE TK_EQ TK_GT TK_GE TK_NE  , TK_ID TK_NUM TK_RNUM TK_OP TK_CL TK_SQT TK_NOT declaration array_declaration map_declaration assignmentStmt SingleOrRecOrArrayId Operator funCallStmt conditionalStmt elseif ioStmt allVar Other_Var bExp mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd mapAdd 
+mapStmt TK_MAPINSERT TK_MAPREMOVE  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_ENDMAIN TK_IF TK_ENDIF TK_WHILE TK_ENDWHILE TK_ENDFUNCTION TK_ELSEIF TK_ELSE TK_GET TK_PUT TK_PUTS TK_CALL dataType more_IDs SingleOrRecOrArrayId funCallStmt IterativeStmt conditionalStmt elseif elseif 
+mapAdd TK_MAPINSERT  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_ENDMAIN TK_IF TK_ENDIF TK_WHILE TK_ENDWHILE TK_ENDFUNCTION TK_ELSEIF TK_ELSE TK_GET TK_PUT TK_PUTS TK_CALL dataType more_IDs SingleOrRecOrArrayId funCallStmt IterativeStmt conditionalStmt elseif elseif 
+mapDelete TK_MAPREMOVE  , TK_MAPINSERT TK_MAPREMOVE TK_ASSIGN TK_ENDMAIN TK_IF TK_ENDIF TK_WHILE TK_ENDWHILE TK_ENDFUNCTION TK_ELSEIF TK_ELSE TK_GET TK_PUT TK_PUTS TK_CALL dataType more_IDs SingleOrRecOrArrayId funCallStmt IterativeStmt conditionalStmt elseif elseif elseif 

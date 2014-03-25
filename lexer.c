@@ -504,28 +504,21 @@ char * symbolToStr(symbol s)
 {
  switch(s)
    {
+   
    case TK_ASSIGNOP:
      return "TK_ASSIGNOP";
-   case TK_FIELDID:
-     return "TK_FIELDID";
+   case TK_COMMENT:
+     return "TK_COMMENT";
    case TK_ID:
      return "TK_ID";
    case TK_NUM:
      return "TK_NUM";
    case TK_RNUM:
      return "TK_RNUM";
+   case TK_CHR:
+     return "TK_CHR";
    case TK_STRING:
      return "TK_STRING";
-   case TK_FUNID:
-     return "TK_FUNID";
-   case TK_RECORDID:
-     return "TK_RECORDID";
-   case TK_ARRAYID:
-     return "TK_ARRAYID";
-   case TK_MAPID:
-     return "TK_MAPID";
-   case TK_MAPFIELD:
-     return "TK_MAPFIELD";
    case TK_MAPINSERT:
      return "TK_MAPINSERT";
    case TK_MAPREMOVE:
@@ -632,38 +625,32 @@ char * symbolToStr(symbol s)
      return "TK_GE";
    case TK_NE:
      return "TK_NE";
-   case TK_COMMENT:
-     return "TK_COMMENT";
-   case TK_ERROR:
-     return "TK_ERROR";
+   case TK_EPS:
+     return "TK_EPS";
+   case $:
+     return "$";
    case program:
      return "program";
    case typeDefinition_s:
      return "typeDefinition_s";
-   case mainFunction:
-     return "mainFunction";
    case typeDefinition:
      return "typeDefinition";
    case fieldDefinition_s:
      return "fieldDefinition_s";
    case fieldDefinition:
      return "fieldDefinition";
-   case TK_EPS:
-     return "TK_EPS";
+   case moreField_ID:
+     return "moreField_ID";
    case moreFields:
      return "moreFields";
    case primitiveDatatype:
      return "primitiveDatatype";
-   case moreField_ID:
-     return "moreField_ID";
    case globalStatements:
      return "globalStatements";
    case globalDeclare:
      return "globalDeclare";
    case globalAssign:
      return "globalAssign";
-   case dataType:
-     return "dataType";
    case var:
      return "var";
    case otherFunctions:
@@ -674,18 +661,20 @@ char * symbolToStr(symbol s)
      return "input_par";
    case output_par:
      return "output_par";
-   case stmt_s:
-     return "stmt_s";
    case parameter_list:
      return "parameter_list";
-   case remaining_list:
-     return "remaining_list";
+   case dataType:
+     return "dataType";
    case constructedDatatype:
      return "constructedDatatype";
+   case remaining_list:
+     return "remaining_list";
+   case mainFunction:
+     return "mainFunction";
+   case stmt_s:
+     return "stmt_s";
    case declaration_s:
      return "declaration_s";
-   case otherStmts:
-     return "otherStmts";
    case all_declaration:
      return "all_declaration";
    case declaration:
@@ -694,73 +683,78 @@ char * symbolToStr(symbol s)
      return "array_declaration";
    case map_declaration:
      return "map_declaration";
-   case more_IDs:
-     return "more_IDs";
-   case more_array_IDs:
-     return "more_array_IDs";
    case moreMapID:
      return "moreMapID";
+   case more_array_IDs:
+     return "more_array_IDs";
+   case more_IDs:
+     return "more_IDs";
+   case otherStmts:
+     return "otherStmts";
    case stmt:
      return "stmt";
    case assignmentStmt:
      return "assignmentStmt";
-   case iterativeStmt:
-     return "iterativeStmt";
-   case ioStmt:
-     return "ioStmt";
-   case funCallStmt:
-     return "funCallStmt";
-   case mapStmt:
-     return "mapStmt";
    case SingleOrRecOrArrayId:
      return "SingleOrRecOrArrayId";
-   case arithmeticExpression:
-     return "arithmeticExpression";
    case Other_Id:
      return "Other_Id";
-   case numorid:
-     return "numorid";
+   case arithmeticExpression:
+     return "arithmeticExpression";
    case more_variables:
      return "more_variables";
-   case operator:
-     return "operator";
+   case Operator:
+     return "Operator";
+   case funCallStmt:
+     return "funCallStmt";
    case idList:
      return "idList";
    case more_ids:
      return "more_ids";
-   case booleanExpression:
-     return "booleanExpression";
+   case IterativeStmt:
+     return "IterativeStmt";
    case conditionalStmt:
      return "conditionalStmt";
-   case else$elseif:
-     return "else$elseif";
-   case elseifs:
-     return "elseifs";
-   case Else:
-     return "Else";
+   case Elseandelseif:
+     return "Elseandelseif";
    case elseif:
      return "elseif";
+   case Elseifs:
+     return "Elseifs";
+   case Elseif:
+     return "Elseif";
+   case Else:
+     return "Else";
+   case ioStmt:
+     return "ioStmt";
    case allVar:
      return "allVar";
+   case TK_ERROR:
+     return "TK_ERROR";
    case Other_Var:
      return "Other_Var";
+   case numorid:
+     return "numorid";
+   case booleanExpression:
+     return "booleanExpression";
    case bExp:
      return "bExp";
-   case variable:
-     return "variable";
    case Op:
      return "Op";
+   case variable:
+     return "variable";
+   case Other_Variable:
+     return "Other_Variable";
    case logicalOp:
      return "logicalOp";
    case relationalOp:
      return "relationalOp";
-   case Other_Variable:
-     return "Other_Variable";
+   case mapStmt:
+     return "mapStmt";
    case mapAdd:
      return "mapAdd";
    case mapDelete:
-     return "mapDelet";
-
+     return "mapDelete";
    }
 }
 

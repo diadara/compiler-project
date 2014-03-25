@@ -2,6 +2,7 @@
 #include<sys/types.h>
 #include<fcntl.h>
 #include"lexer.h"
+#include"parser.h"
 #include<stdio.h>
 #include<stdlib.h>
 
@@ -10,6 +11,7 @@
 int main(int argc, char* argv[])
 {
   int fp;
+  bool error;
   if(argc == 2)
      fp = open(argv[1],O_RDONLY);
   else
@@ -20,14 +22,37 @@ int main(int argc, char* argv[])
     
 
   keywordTable kt = createKeywordTable();
-  tokenlistp tl = getTokenlist(fp,kt);
-  printTokenList(tl);
+  /* tokenlistp tl = getTokenlist(fp,kt); */
+  /* printTokenList(tl); */
 
   /* int i; */
   /* for(i = 0;i<60;i++) */
   /*   printf("%s %d\n", kt[i].keyword, kt[i].s); */
     
+  FILE * g = fopen("newGram.txt","r");
+  FILE * p = fopen("parsetable.csv", "w");
+  if(g==NULL)
+    {
+        printf("Grammar file not found\n");
+        return 0;
+    }
+  #ifdef DEBUG
+  printf("Grammar file opened\n");
+  #endif
+  grammar G[200];
+  keywordTable nt = createNtTable();
+  int gno = createGrammar(g,G,nt);
 
+#ifdef DEBUG
+  printf("%d rules read from Grammar", gno);
+#endif
+
+  parseTree P = parseInputSourceCode(fp, kt, G,&error);
+
+  FILE * pt = fopen("parsetree","w");
+  
+  printParseTree(P,pt);
+  
     return 0;
 }
 
