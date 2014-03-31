@@ -1,0 +1,4 @@
+main
+var int a;
+assign a: 1;
+end_main

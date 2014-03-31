@@ -2,3 +2,5 @@ lex
 compile*
 *.o
 *.out
+TAGS
+

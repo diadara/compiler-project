@@ -240,7 +240,10 @@ bool isTerminal(symbol s)//returns true if given symbol is terminal
 
 Stack push(Stack S,parseTree tree)
 {
-    if(S.top==NULL)
+#ifdef DEBUG
+  printf("\n pushing %s to stack", symbolToStr(tree->t->s));
+#endif
+  if(S.top==NULL)
         S.top=createStackNode(tree);
     else{
         struct stackNode* newnode=createStackNode(tree);
@@ -253,7 +256,12 @@ Stack push(Stack S,parseTree tree)
 
 Stack pop(Stack S)
 {
-    struct stackNode* p;
+
+#ifdef DEBUG
+  printf("\n poping  %s from stack", symbolToStr(S.top->tree->t->s));
+#endif
+
+  struct stackNode* p;
     p=S.top;
     S.top=S.top->next;
     free(p);
@@ -275,20 +283,33 @@ parseTree createParseNode(symbol s,int lineno)
 {
     int i;
     tokenp t;
-    t=malloc(sizeof(tokenp));
+    t=malloc(sizeof *t);
     t->s=s;
     parseTree newnode;
-    newnode = malloc(sizeof(struct parsetree));
+    newnode = malloc(sizeof *newnode);
     newnode->t=t;
     newnode->lineno=lineno;
     newnode->parent=NULL;
-    newnode->pull=0;
     for(i=0;i<20;i++)
         newnode->next[i]=NULL;
     return newnode;
+    
 }
 
 
+void printRule(grammar G[], int ruleno)
+{
+
+  printf("\n rule no:%d %s -> ",ruleno, symbolToStr(G[ruleno].nt));
+  int i = G[ruleno].listno;
+  while(i--)
+    {
+      printf(" %s ",symbolToStr(G[ruleno].list[i]));
+    }
+
+  printf("\n");
+  
+}
 
 
 void printParseTree(parseTree  PT, FILE *outfile)
@@ -331,112 +352,80 @@ void printParseTree(parseTree  PT, FILE *outfile)
 
 parseTree parseInputSourceCode(int fp, keywordTable kt, grammar g[], bool*error)
 {
+#ifdef DEBUG
+  printf("\n started parsing pushing program to stack: error %d", *error);
+#endif
     tokenp t;
     parseTree P;
     parseTree parent,child;
-    int lineno=1 , i , k,q;
+    int lineno=1 , i , k;
     Stack S;
     S.size=0;
     S.top=NULL;
-
     P=createParseNode(program,lineno);
     S=push(S,P);
-    while(1)
-    {
-        t = getNextToken(fp, kt, error, &lineno);
-        if(t==NULL || *error || t->s != TK_COMMENT)
+
+    t = getNextToken(fp, kt, error, &lineno);
+#ifdef DEBUG
+    printf("\n got %s , error %d , size %d", symbolToStr(t->s), *error, S.size);
+#endif
+
+    
+    while(*error==FALSE && t!=NULL && S.size!=0){
+      if(isTerminal(S.top->tree->t->s))
         {
-            if(*error)
+          if(t->s==S.top->tree->t->s)
             {
-                if(t->s==TK_ERROR)
-                {
-                    printf("ERROR: Unknown pattern %s\n at line %d\n", t->lexeme, lineno);
-                  
-                }
-                return NULL;
+              S.top->tree->ruleno=-1;
+              if(t->s==TK_ID || t->s==TK_NUM)
+                strcpy(S.top->tree->t->lexeme,t->lexeme);
+            free(t);
+            S.top->tree->lineno=lineno;          
+            S=pop(S);
+            t = getNextToken(fp, kt, error, &lineno);
+#ifdef DEBUG
+    printf("\n got %s , error %d , size %d", symbolToStr(t->s), *error, S.size);
+#endif
+
             }
+        else if(S.top->tree->t->s==TK_EPS){
+            S.top->tree->ruleno=-1;
+            S=pop(S);
+        }
+        else{
+            *error=1;
+            printf("\n %d: %s expected near %s.\n",lineno,symbolToStr(S.top->tree->t->s),symbolToStr(t->s));
+            free(t);
             break;
         }
     }
+      else{
 
-    while(!(*error) && S.size && t )
-    {
-        if(isTerminal(S.top->tree->t->s))
-        {
-            if(t->s==S.top->tree->t->s)
-            {
-                S.top->tree->ruleno=-1;
-                strcpy(S.top->tree->t->lexeme,t->lexeme);
-                //free(t);
-                S.top->tree->lineno=lineno;
-                S=pop(S);
-                while(1)
-                {
-                    t = getNextToken(fp, kt, error, &lineno);
-                    if(t==NULL || *error==1 || t->s != TK_COMMENT)
-                    {
-                        if(*error)
-                        {
-                            if(t->s==TK_ERROR)
-                                printf("ERROR: Unknown pattern %s at line %d\n", t->lexeme, lineno);
-                           
-                            return NULL;
-                        }
-                        break;
-                    }
-                   
-                }
-            }
-            else if(S.top->tree->t->s==TK_EPS)
-            {
-                S.top->tree->ruleno=-1;
-                S=pop(S);
-            }
-            else
-            {
-                *error=1;
-                if(*error)
-                {
-                    printf("ERROR: The token %s for lexeme %s does not match at line %d. ",symbolToStr(t->s), t->lexeme, lineno);
-                    
-                }
-                //free(t);
-                break;
-            }
+        i=T[S.top->tree->t->s-program][t->s];
+        if(i==-1){
+            *error=1;
+            printf("\n %d: Unxpected symbol  %s.",lineno,symbolToStr(t->s));
+            break;
         }
-        else
-        {
-            i=T[S.top->tree->t->s-program][t->s];
-            if(i==-1)
-            {
-                *error=1;
-                if(*error)
-                {
-                    printf("ERROR: The token %s for lexeme %s does not match at line %d.is ",symbolToStr(t->s), t->lexeme, lineno);
-          
-                }
-                break;
-            }
-            parent=S.top->tree;
-            parent->ruleno=i;
-            S=pop(S);
-            for(k=g[i].listno -1 ;k>=0;k--)
-            {
-                child=createParseNode(g[i].list[k],lineno);
-                child->parent = parent;
-                S=push(S,child);
-                parent->next[k]=child;
-            }
+#ifdef DEBUG
+        printRule(g,i);
+#endif
+        parent=S.top->tree;
+        parent->ruleno=i;        
+        S=pop(S);
+        for(k=g[i].listno -1 ;k>=0;k--) {
+          child=createParseNode(g[i].list[k],lineno);
+            child->parent = parent;            
+            S=push(S,child);
+            parent->next[k]=child;//need to preserve order
         }
+      }   
     }
+    
+if(t==NULL && *error==1)
+    printf("\n %d: Unknown/invalid token.\n",lineno); 
+else if(t!=NULL && S.size==0)
+    printf("\n %d: Program expected to end near %s",lineno,symbolToStr(t->s));
+return P;
 
-    if(!t && *error)
-    {
-        if(t->s==TK_ERROR)
-            printf("ERROR: Unknown pattern %sat line %d\n", t->lexeme, lineno);
-        return NULL;
-    }
-    else if(t && !S.size)
-      printf("ERROR: %d: Program did not end prperly. It expected to end near %s\n",lineno,symbolToStr(t->s));
-    return P;
 }
