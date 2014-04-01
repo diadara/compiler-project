@@ -717,8 +717,6 @@ char * symbolToStr(symbol s)
      return "conditionalStmt";
    case Elseandelseif:
      return "Elseandelseif";
-   case elseif:
-     return "elseif";
    case Elseifs:
      return "Elseifs";
    case Elseif:

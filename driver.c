@@ -5,6 +5,7 @@
 #include"parser.h"
 #include<stdio.h>
 #include<stdlib.h>
+#include "parseTable.h"
 
 
 int main(int argc, char* argv[])
@@ -40,12 +41,16 @@ int main(int argc, char* argv[])
 #ifdef DEBUG
   printf("%d rules read from Grammar", gno);
 #endif
-  
-  parseTree P = parseInputSourceCode(fp, kt, G,&error);
 
-  FILE * pt = fopen("parsetree","w");
+ ParseTable PT  = getParseTable();
+
+
+ //printRule(G,PT.T[globalStatements - program][TK_MAIN]);
+   parseTree P = parseInputSourceCode(fp, kt, G,&error);
+
+  /* FILE * pt = fopen("parsetree","w"); */
   
-  printParseTree(P,pt);
+  /* printParseTree(P,pt); */
   
     return 0;
 }

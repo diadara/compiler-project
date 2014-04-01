@@ -9,7 +9,6 @@
 
 extern bool any_error;
 
-extern int T[][61];
 
 symbol toSym(char *a, keywordTable nt)//return Symbol for given string
 {
@@ -162,7 +161,6 @@ keywordTable  createNtTable()
     addNt(kn,"more_ids",more_ids);
     addNt(kn,"IterativeStmt",IterativeStmt);
     addNt(kn,"conditionalStmt",conditionalStmt);
-    addNt(kn,"elseif",elseif);
     addNt(kn,"Elseandelseif",Elseandelseif);
     addNt(kn,"Elseifs",Elseifs);
     addNt(kn,"Elseif",Elseif);
@@ -241,7 +239,7 @@ bool isTerminal(symbol s)//returns true if given symbol is terminal
 Stack push(Stack S,parseTree tree)
 {
 #ifdef DEBUG
-  printf("\n pushing %s to stack", symbolToStr(tree->t->s));
+  printf("\n pushing %s to stack (%d)", symbolToStr(tree->t->s), S.size);
 #endif
   if(S.top==NULL)
         S.top=createStackNode(tree);
@@ -258,7 +256,7 @@ Stack pop(Stack S)
 {
 
 #ifdef DEBUG
-  printf("\n poping  %s from stack", symbolToStr(S.top->tree->t->s));
+  printf("\n poping  %s from stack (%d)", symbolToStr(S.top->tree->t->s), S.size);
 #endif
 
   struct stackNode* p;
@@ -299,7 +297,11 @@ parseTree createParseNode(symbol s,int lineno)
 
 void printRule(grammar G[], int ruleno)
 {
+  if(ruleno < 0) {
+  printf("\n invalid rule \n");
+  return;
 
+  }
   printf("\n rule no:%d %s -> ",ruleno, symbolToStr(G[ruleno].nt));
   int i = G[ruleno].listno;
   while(i--)
@@ -352,6 +354,8 @@ void printParseTree(parseTree  PT, FILE *outfile)
 
 parseTree parseInputSourceCode(int fp, keywordTable kt, grammar g[], bool*error)
 {
+  ParseTable PT = getParseTable();
+  
 #ifdef DEBUG
   printf("\n started parsing pushing program to stack: error %d", *error);
 #endif
@@ -400,8 +404,10 @@ parseTree parseInputSourceCode(int fp, keywordTable kt, grammar g[], bool*error)
         }
     }
       else{
-
-        i=T[S.top->tree->t->s-program][t->s];
+#ifdef DEBUG
+        //    printf("\n going to check %d %d %s %s", (S.top->tree-t->s - program), t->s, symbolToStr(S.top->tree-t->s),symbolToStr(t->s));
+#endif
+        i=PT.T[S.top->tree->t->s-program][t->s]; // might segfault
         if(i==-1){
             *error=1;
             printf("\n %d: Unxpected symbol  %s.",lineno,symbolToStr(t->s));

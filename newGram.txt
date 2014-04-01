@@ -18,7 +18,7 @@ globalAssign TK_ASSIGN TK_ID TK_ASSIGNOP var TK_SEM .
 globalAssign TK_EPS .
 var TK_NUM .
 var TK_RNUM .
-var TK_SQT TK_CHAR TK_SQT .
+var TK_SQT TK_CHR TK_SQT .
 otherFunctions function otherFunctions .
 otherFunctions TK_EPS .
 function TK_FUNCTION TK_ID input_par output_par stmt_s TK_ENDFUNCTION .
