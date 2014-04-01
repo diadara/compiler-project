@@ -238,9 +238,6 @@ bool isTerminal(symbol s)//returns true if given symbol is terminal
 
 Stack push(Stack S,parseTree tree)
 {
-#ifdef DEBUG
-  printf("\n pushing %s to stack (%d)", symbolToStr(tree->t->s), S.size);
-#endif
   if(S.top==NULL)
         S.top=createStackNode(tree);
     else{
@@ -249,6 +246,11 @@ Stack push(Stack S,parseTree tree)
         S.top=newnode;
     }
     S.size++;
+
+#ifdef DEBUG
+  printf("\n pushing %s to stack (%d)", symbolToStr(tree->t->s), S.size);
+#endif
+
     return S;
 }
 
@@ -256,7 +258,7 @@ Stack pop(Stack S)
 {
 
 #ifdef DEBUG
-  printf("\n poping  %s from stack (%d)", symbolToStr(S.top->tree->t->s), S.size);
+  printf("\n poping  %s from stack", symbolToStr(S.top->tree->t->s));
 #endif
 
   struct stackNode* p;
@@ -264,6 +266,7 @@ Stack pop(Stack S)
     S.top=S.top->next;
     free(p);
     S.size--;
+    printf("(%d)", S.size);
     return S;
 }
 
@@ -388,7 +391,8 @@ parseTree parseInputSourceCode(int fp, keywordTable kt, grammar g[], bool*error)
             S=pop(S);
             t = getNextToken(fp, kt, error, &lineno);
 #ifdef DEBUG
-    printf("\n got %s , error %d , size %d", symbolToStr(t->s), *error, S.size);
+ if(t)
+   printf("\n got %s , error %d , size %d", symbolToStr(t->s), *error, S.size);
 #endif
 
             }
