@@ -281,7 +281,7 @@ struct stackNode* createStackNode(parseTree tree)
 
 
 parseTree createParseNode(symbol s,int lineno)
-{
+{ static int k;
     int i;
     tokenp t;
     t=malloc(sizeof *t);
@@ -291,6 +291,8 @@ parseTree createParseNode(symbol s,int lineno)
     newnode->t=t;
     newnode->lineno=lineno;
     newnode->parent=NULL;
+    newnode->nochild = 0;
+    newnode->id = k++;
     for(i=0;i<20;i++)
         newnode->next[i]=NULL;
     return newnode;
@@ -317,42 +319,40 @@ void printRule(grammar G[], int ruleno)
 }
 
 
-void printParseTree(parseTree  PT, FILE *outfile)
-{
+void printParseTree_helper(parseTree PT, FILE * of)
+  {
     int i;
-    char empty[10], yes[20], no[20];
-    strcpy(empty,"----");
-    strcpy(yes, "yes");
-    strcpy(no, "no");
     if(PT==NULL)
-    {
-        printf("Parse tree is invalid\n");
+      {
         return;
-    }
-    if(PT->next[0]==NULL)
-        printf( "%-31s", PT->t->lexeme);
+      }
+    char parent[20];
+    strcpy(parent, symbolToStr(PT->t->s));
+    
+    char join[10];
+    if(PT->t->s == TK_ID || PT->t->s == TK_NUM || PT->t->s == TK_RNUM || PT->t->s == TK_CHR )
+      fprintf(of,"%s%d[label=\"%s\"]\n",parent, PT->id, PT->t->lexeme);
+    else if (PT->t->s == TK_EPS)
+      fprintf(of,"%s%d[label=\"%s\"]\n",parent, PT->id, "eps");
     else
-        printf( "%-31s", empty);
-    printf( "%-5d%-20s", PT->lineno, symbolToStr(PT->t->s));
-    if(PT->t->s==TK_NUM || PT->t->s==TK_RNUM)
-        printf( "%-21s", PT->t->lexeme);
-    else
-        printf( "%-21s", empty);
-    if(PT->parent!=NULL)
-        printf( "%-21s", symbolToStr(PT->parent->t->s));
-    else
-        printf( "%-21s", empty);
-    if(PT->next[0]==NULL)
-        printf( "%-5s", yes);
-    else
-        printf( "%-5s", no);
-    if(!isTerminal(PT->t->s))
-        printf( "%-21s\n", symbolToStr(PT->t->s));
-    else
-        printf( "%-21s\n", empty);
-    for(i=0;i<20 && PT->next[i]!=NULL;i++)   printParseTree(PT->next[i],outfile);
-}
+      fprintf(of,"%s%d[label=\"%s\"]\n",parent, PT->id, parent);
+      strcpy(join," -- ");
+      
+    for(i=0;i<PT->nochild && PT->next[i]!=NULL;i++)
+      fprintf(of, "%s%d%s%s%d\n",parent, PT->id, join,symbolToStr(PT->next[i]->t->s), PT->next[i]->id);
+    for(i=0;i<PT->nochild && PT->next[i]!=NULL;i++) printParseTree_helper(PT->next[i],of);
 
+
+    
+  }
+
+void printParseTree(parseTree  PT, FILE *of)
+{
+
+      fprintf(of, "graph G { \n");
+      printParseTree_helper(PT, of);     
+      fprintf(of, "\n}\n");
+}
 
 
 parseTree parseInputSourceCode(int fp, keywordTable kt, grammar g[], bool*error)
@@ -423,12 +423,14 @@ parseTree parseInputSourceCode(int fp, keywordTable kt, grammar g[], bool*error)
         parent=S.top->tree;
         parent->ruleno=i;        
         S=pop(S);
+        parent->nochild = g[i].listno;
         for(k=g[i].listno -1 ;k>=0;k--) {
           child=createParseNode(g[i].list[k],lineno);
             child->parent = parent;            
             S=push(S,child);
             parent->next[k]=child;//need to preserve order
         }
+
       }   
     }
     

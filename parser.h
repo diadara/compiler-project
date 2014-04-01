@@ -24,6 +24,8 @@ struct parsetree
     int lineno;
     struct parsetree* parent;
     bool visited;
+  int nochild;
+  int id; // for identifying while  drawing parsetree
     struct parsetree* next[20];//assuming length of RHS of rules is bounded by 20 
 };
 

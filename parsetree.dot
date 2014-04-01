@@ -1,0 +1,86 @@
+graph G { 
+program0[label="program"]
+program0 -- typeDefinition_s4
+program0 -- globalStatements3
+program0 -- otherFunctions2
+program0 -- mainFunction1
+typeDefinition_s4[label="typeDefinition_s"]
+typeDefinition_s4 -- TK_EPS5
+TK_EPS5[label="eps"]
+globalStatements3[label="globalStatements"]
+globalStatements3 -- TK_EPS6
+TK_EPS6[label="eps"]
+otherFunctions2[label="otherFunctions"]
+otherFunctions2 -- TK_EPS7
+TK_EPS7[label="eps"]
+mainFunction1[label="mainFunction"]
+mainFunction1 -- TK_MAIN10
+mainFunction1 -- stmt_s9
+mainFunction1 -- TK_ENDMAIN8
+TK_MAIN10[label="TK_MAIN"]
+stmt_s9[label="stmt_s"]
+stmt_s9 -- declaration_s12
+stmt_s9 -- otherStmts11
+declaration_s12[label="declaration_s"]
+declaration_s12 -- all_declaration14
+declaration_s12 -- declaration_s13
+all_declaration14[label="all_declaration"]
+all_declaration14 -- declaration15
+declaration15[label="declaration"]
+declaration15 -- TK_VAR20
+declaration15 -- dataType19
+declaration15 -- TK_ID18
+declaration15 -- more_IDs17
+declaration15 -- TK_SEM16
+TK_VAR20[label="TK_VAR"]
+dataType19[label="dataType"]
+dataType19 -- primitiveDatatype21
+primitiveDatatype21[label="primitiveDatatype"]
+primitiveDatatype21 -- TK_INT22
+TK_INT22[label="TK_INT"]
+TK_ID18[label="a"]
+more_IDs17[label="more_IDs"]
+more_IDs17 -- TK_EPS23
+TK_EPS23[label="eps"]
+TK_SEM16[label="TK_SEM"]
+declaration_s13[label="declaration_s"]
+declaration_s13 -- TK_EPS24
+TK_EPS24[label="eps"]
+otherStmts11[label="otherStmts"]
+otherStmts11 -- stmt26
+otherStmts11 -- otherStmts25
+stmt26[label="stmt"]
+stmt26 -- assignmentStmt27
+assignmentStmt27[label="assignmentStmt"]
+assignmentStmt27 -- TK_ASSIGN32
+assignmentStmt27 -- SingleOrRecOrArrayId31
+assignmentStmt27 -- TK_ASSIGNOP30
+assignmentStmt27 -- arithmeticExpression29
+assignmentStmt27 -- TK_SEM28
+TK_ASSIGN32[label="TK_ASSIGN"]
+SingleOrRecOrArrayId31[label="SingleOrRecOrArrayId"]
+SingleOrRecOrArrayId31 -- TK_ID34
+SingleOrRecOrArrayId31 -- Other_Id33
+TK_ID34[label="a"]
+Other_Id33[label="Other_Id"]
+Other_Id33 -- TK_EPS35
+TK_EPS35[label="eps"]
+TK_ASSIGNOP30[label="TK_ASSIGNOP"]
+arithmeticExpression29[label="arithmeticExpression"]
+arithmeticExpression29 -- variable37
+arithmeticExpression29 -- more_variables36
+variable37[label="variable"]
+variable37 -- TK_NUM38
+TK_NUM38[label="1"]
+more_variables36[label="more_variables"]
+more_variables36 -- arithmeticExpression39
+arithmeticExpression39[label="arithmeticExpression"]
+arithmeticExpression39 -- TK_EPS40
+TK_EPS40[label="eps"]
+TK_SEM28[label="TK_SEM"]
+otherStmts25[label="otherStmts"]
+otherStmts25 -- TK_EPS41
+TK_EPS41[label="eps"]
+TK_ENDMAIN8[label="TK_ENDMAIN"]
+
+}

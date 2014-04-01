@@ -48,9 +48,12 @@ int main(int argc, char* argv[])
  //printRule(G,PT.T[globalStatements - program][TK_MAIN]);
    parseTree P = parseInputSourceCode(fp, kt, G,&error);
 
-  /* FILE * pt = fopen("parsetree","w"); */
-  
-  /* printParseTree(P,pt); */
+  FILE * pt = fopen("parsetree.dot","w");
+
+  printf("\n");
+  printParseTree(P,pt);
+
+  fclose(pt);
   
     return 0;
 }

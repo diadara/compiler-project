@@ -15,4 +15,6 @@ parser: parser.c parser.h
 parsetable: parseTable.h parseTable.c
 	$(CC) -c parseTable.c
 clean:
-	rm *.out *.o compile* firsts
+	rm *.out *.o compile* firsts *.ps *.dot *.csv
+parsetree: parsetree.dot
+	dot -Tps  parsetree.dot -o parsetree.ps
