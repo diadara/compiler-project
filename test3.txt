@@ -1,18 +1,19 @@
 record complex
-    int x;
-    int y;
+    var int x;
+    var int y;
 end_record
 
 global var record complex a;
 
-assign a.x : 1;
-assign a.y : 1;
-
 function complex_add
-    input[record complex a, record complex b]
-    output[record complex c]
+    input[var record complex a, var record complex b]
+    output[var record complex c]
+
+    assign a.x : 1;
+    assign a.y : 1;
+
     assign c.x : a.x + b.x;
-    assign c.y : a.y + b.y
+    assign c.y : a.y + b.y;
 end_function
 
 main
