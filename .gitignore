@@ -1,5 +1,7 @@
 lex
 compile*
+*.dot
+*.ps
 *.o
 *.out
 TAGS
