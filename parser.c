@@ -338,9 +338,9 @@ void printParseTree_helper(parseTree PT, FILE * of)
       fprintf(of,"%s%d[label=\"%s\"]\n",parent, PT->id, parent);
       strcpy(join," -- ");
       
-    for(i=0;i<PT->nochild && PT->next[i]!=NULL;i++)
+    for(i=0;i<20 && PT->next[i]!=NULL;i++)
       fprintf(of, "%s%d%s%s%d\n",parent, PT->id, join,symbolToStr(PT->next[i]->t->s), PT->next[i]->id);
-    for(i=0;i<PT->nochild && PT->next[i]!=NULL;i++) printParseTree_helper(PT->next[i],of);
+    for(i=0;i<20 && PT->next[i]!=NULL;i++) printParseTree_helper(PT->next[i],of);
 
 
     
@@ -441,3 +441,122 @@ else if(t!=NULL && S.size==0)
 return P;
 
 }
+
+
+void copyTree(parseTree A , parseTree B)
+{
+    int i=0;
+    A->t->s = B->t->s;
+    A->lineno = B->lineno;
+    if(isTerminal(B->t->s))
+    {
+        strcpy(A->t->lexeme,B->t->lexeme);
+    }
+    while(B->next[i]!=NULL)
+    {
+        A->next[i] = B->next[i];
+        i++;
+    }
+    A->next[i] = NULL;
+}
+
+parseTree createAbstractSyntaxTree(parseTree T)
+{
+    int n = 0;
+    parseTree A = NULL;
+    while(T->next[n] != NULL)
+        n++;
+    if(n==1)
+    {
+        return createAbstractSyntaxTree(T->next[0]);
+    }
+    else if(n==0)
+    {
+
+#define symbol(T) (T->t->s)
+      if(symbol(T) == TK_EPS || symbol(T) == TK_OP || symbol(T) == TK_CL || symbol(T) == TK_ASSIGNOP ||
+         symbol(T) == TK_SEM || symbol(T) == TK_SQR || symbol(T) == TK_SQL || symbol(T) == TK_COMMA || 
+         symbol(T)==TK_CALL || symbol(T) == TK_ENDMAIN || symbol(T) == TK_ENDIF || symbol(T) == TK_ENDWHILE
+         || symbol(T) == TK_ENDRECORD || symbol(T) == TK_ENDFUNCTION)
+            return NULL;
+        if(isTerminal(T->t->s))
+        {
+            A = createParseNode(T->t->s,T->lineno);
+            A->parent=T->parent;
+            copyTree(A,T);
+        }
+        return A;
+    }
+    else
+    {
+        int j=0,k=0;
+        A = createParseNode(T->t->s,T->lineno);
+        A->parent=T->parent;
+        parseTree temp;
+        while(T->next[j]!=NULL)
+        {
+#define nextsymbol(T,j)  (T->next[j]->t->s)
+          if(nextsymbol(T,j) == TK_EPS || nextsymbol(T,j) == TK_OP || nextsymbol(T,j) == TK_CL || nextsymbol(T,j) == TK_ASSIGNOP ||
+             nextsymbol(T,j) == TK_SEM || nextsymbol(T,j) == TK_SQR || nextsymbol(T,j) == TK_SQL || nextsymbol(T,j) == TK_COMMA || 
+             nextsymbol(T,j)==TK_CALL || nextsymbol(T,j) == TK_ENDMAIN || nextsymbol(T,j) == TK_ENDIF || nextsymbol(T,j) == TK_ENDWHILE
+             || nextsymbol(T,j) == TK_ENDRECORD || nextsymbol(T,j) == TK_ENDFUNCTION)
+            {
+                j++;
+                continue;
+            }
+            temp = createAbstractSyntaxTree(T->next[j]);
+            if(temp != NULL)
+            {
+                A->next[k] = temp;
+                temp->parent = A;
+                k++;
+            }
+            j++;
+        }
+        j = 0;
+        int m = 0, f=0;
+        while(A->next[j] != NULL)
+        {
+          if((nextsymbol(A,j) == TK_PLUS || nextsymbol(A,j)==TK_MINUS || nextsymbol(A,j) == TK_MUL || nextsymbol(A,j)==TK_DIV || 
+              nextsymbol(A,j)==TK_LE || nextsymbol(A,j)==TK_LT || nextsymbol(A,j)==TK_GT || nextsymbol(A,j)==TK_GE || 
+              nextsymbol(A,j)==TK_NE || nextsymbol(A,j)==TK_EQ || nextsymbol(A,j)==TK_AND || nextsymbol(A,j)==TK_OR) && (!A->next[j]->pull))
+            {
+                f = 1;
+                m = j;
+            }
+            j++;
+        }
+        if(j==1)
+        {
+            if(!isTerminal(A->t->s))
+            {
+                copyTree(A,A->next[0]); 
+            }
+        }
+        else if(j==0)
+        {
+            free(A);
+            return NULL;
+            
+        }
+        else if(f)
+        {
+            A->t->s = A->next[m]->t->s;
+            A->lineno = A->next[m]->lineno;
+            if(isTerminal(A->next[m]->t->s))
+            {
+                strcpy(A->t->lexeme,A->next[m]->t->lexeme);
+            }
+            A->pull = 1;
+            m++;
+            while(A->next[m] != NULL)
+            {
+                A->next[m-1] = A->next[m];
+                m++;
+            }
+            A->next[m-1] = NULL;
+        }
+        return A;
+    }
+}
+
