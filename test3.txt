@@ -12,8 +12,8 @@ function complex_add
     assign a.x : 1;
     assign a.y : 1;
 
-    assign c.x : a.x + b.x;
-    assign c.y : a.y + b.y;
+    assign c.x : a.x + b.x + 4;
+    assign c.y : a.y + b.y+ 5;
 end_function
 
 main

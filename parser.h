@@ -73,7 +73,7 @@ void copyTree(parseTree A , parseTree B);
 
 
 parseTree createAbstractSyntaxTree(parseTree T);
-void printAST(parseTree A, FILE *outFile, int *totalAllocatedMemory);
+void printAST(parseTree A, FILE *outFile);
 parseTree parseInputSourceCode(int fp, keywordTable kt, grammar g[], bool*error);
 
 

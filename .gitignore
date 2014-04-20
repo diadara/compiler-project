@@ -5,4 +5,6 @@ compile*
 *.o
 *.out
 TAGS
+.#*
+
 

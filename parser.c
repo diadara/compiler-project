@@ -266,7 +266,9 @@ Stack pop(Stack S)
     S.top=S.top->next;
     free(p);
     S.size--;
+#ifdef DEBUG
     printf("(%d)", S.size);
+#endif
     return S;
 }
 
@@ -349,7 +351,14 @@ void printParseTree_helper(parseTree PT, FILE * of)
 void printParseTree(parseTree  PT, FILE *of)
 {
 
-      fprintf(of, "graph G { \n");
+      fprintf(of, "graph ParseTree { \n");
+      printParseTree_helper(PT, of);     
+      fprintf(of, "\n}\n");
+
+}void printAST(parseTree  PT, FILE *of)
+{
+
+      fprintf(of, "graph AST { \n");
       printParseTree_helper(PT, of);     
       fprintf(of, "\n}\n");
 }
@@ -476,8 +485,9 @@ parseTree createAbstractSyntaxTree(parseTree T)
 #define symbol(T) (T->t->s)
       if(symbol(T) == TK_EPS || symbol(T) == TK_OP || symbol(T) == TK_CL || symbol(T) == TK_ASSIGNOP ||
          symbol(T) == TK_SEM || symbol(T) == TK_SQR || symbol(T) == TK_SQL || symbol(T) == TK_COMMA || 
-         symbol(T)==TK_CALL || symbol(T) == TK_ENDMAIN || symbol(T) == TK_ENDIF || symbol(T) == TK_ENDWHILE
-         || symbol(T) == TK_ENDRECORD || symbol(T) == TK_ENDFUNCTION)
+         symbol(T) == TK_CALL || symbol(T) == TK_ENDMAIN || symbol(T) == TK_ENDIF || symbol(T) == TK_ENDWHILE ||
+         symbol(T) == TK_ENDRECORD || symbol(T) == TK_ENDFUNCTION || symbol(T) == TK_ASSIGN ||
+         symbol(T) == TK_GLOBAL)
             return NULL;
         if(isTerminal(T->t->s))
         {
@@ -498,8 +508,9 @@ parseTree createAbstractSyntaxTree(parseTree T)
 #define nextsymbol(T,j)  (T->next[j]->t->s)
           if(nextsymbol(T,j) == TK_EPS || nextsymbol(T,j) == TK_OP || nextsymbol(T,j) == TK_CL || nextsymbol(T,j) == TK_ASSIGNOP ||
              nextsymbol(T,j) == TK_SEM || nextsymbol(T,j) == TK_SQR || nextsymbol(T,j) == TK_SQL || nextsymbol(T,j) == TK_COMMA || 
-             nextsymbol(T,j)==TK_CALL || nextsymbol(T,j) == TK_ENDMAIN || nextsymbol(T,j) == TK_ENDIF || nextsymbol(T,j) == TK_ENDWHILE
-             || nextsymbol(T,j) == TK_ENDRECORD || nextsymbol(T,j) == TK_ENDFUNCTION)
+             nextsymbol(T,j)==TK_CALL || nextsymbol(T,j) == TK_ENDMAIN || nextsymbol(T,j) == TK_ENDIF || nextsymbol(T,j) == TK_ENDWHILE ||
+             nextsymbol(T,j) == TK_ENDRECORD || nextsymbol(T,j) == TK_ENDFUNCTION || nextsymbol(T,j) == TK_ASSIGN ||
+             nextsymbol(T,j) == TK_GLOBAL)
             {
                 j++;
                 continue;
@@ -521,8 +532,8 @@ parseTree createAbstractSyntaxTree(parseTree T)
               nextsymbol(A,j)==TK_LE || nextsymbol(A,j)==TK_LT || nextsymbol(A,j)==TK_GT || nextsymbol(A,j)==TK_GE || 
               nextsymbol(A,j)==TK_NE || nextsymbol(A,j)==TK_EQ || nextsymbol(A,j)==TK_AND || nextsymbol(A,j)==TK_OR) && (!A->next[j]->pull))
             {
-                f = 1;
-                m = j;
+                f++;
+                if (f==1) m = j;
             }
             j++;
         }
@@ -560,3 +571,71 @@ parseTree createAbstractSyntaxTree(parseTree T)
     }
 }
 
+
+int countChild(parseTree T)
+{
+  int n = 0,i = 0;
+
+  for(;i<20;i++)
+    if(T->next) n++;
+  T->nochild = n;
+  return n;
+}
+
+parseTree createAbstractSyntaxTree2(parseTree T)
+{
+  parseTree temp, A = NULL;
+#define symbol(T) (T->t->s)
+#define nextsymbol(T,j)  (T->next[j]->t->s)
+  
+  if(isTerminal(symbol(T)))
+    {
+      if(symbol(T) == TK_EPS || symbol(T) == TK_OP || symbol(T) == TK_CL || symbol(T) == TK_ASSIGNOP ||
+         symbol(T) == TK_SEM || symbol(T) == TK_SQR || symbol(T) == TK_SQL || symbol(T) == TK_COMMA || 
+         symbol(T) == TK_CALL || symbol(T) == TK_ENDMAIN || symbol(T) == TK_ENDIF || symbol(T) == TK_ENDWHILE ||
+         symbol(T) == TK_ENDRECORD || symbol(T) == TK_ENDFUNCTION || symbol(T) == TK_ASSIGN ||
+         symbol(T) == TK_GLOBAL)
+        return NULL;
+      else
+        {
+          A = createParseNode(T->t->s,T->lineno);
+          A->parent=T->parent;
+          copyTree(A,T);
+          return A;
+        }
+      
+    }
+  
+  int n = countChild(T);
+  if(n==1)
+    {
+      return createAbstractSyntaxTree(T->next[0]);
+    }
+
+  switch(symbol(T))
+    {
+    case Operator:
+      
+
+    }
+  
+  
+  int j = 0, k = 0;
+  A = createParseNode(T->t->s,T->lineno);
+  A->parent=T->parent;
+  while(T->next[j]!=NULL)
+    {
+      temp = createAbstractSyntaxTree(T->next[j]);
+      if(temp != NULL)
+        {
+          A->next[k] = temp;
+          temp->parent = A;
+          k++;
+        }
+      j++;
+    }
+
+  
+
+  return A;
+}
