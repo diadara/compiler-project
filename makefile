@@ -6,8 +6,8 @@ all: driver
 debug: CC += -DDEBUG -g
 debug: driver
 
-driver: lexer driver.c  parser parsetable
-	$(CC) lexer.o parser.o driver.c parseTable.o  -o compile
+driver: lexer driver.c  parser parsetable ast
+	$(CC) lexer.o parser.o driver.c parseTable.o ast.o  -o compile
 lexer: lexer.c lexer.h
 	$(CC) -c lexer.c
 parser: parser.c parser.h

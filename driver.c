@@ -6,7 +6,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "parseTable.h"
-
+#include "ast.h"
 
 int main(int argc, char* argv[])
 {
@@ -47,15 +47,15 @@ int main(int argc, char* argv[])
 
  //printRule(G,PT.T[globalStatements - program][TK_MAIN]);
    parseTree P = parseInputSourceCode(fp, kt, G,&error);
-   parseTree AST = createAbstractSyntaxTree2(P);
+   AST  A  = createAST(P);
   FILE * pt = fopen("parsetree.dot","w");
-  FILE * ast = fopen("ast.dot","w");
+  FILE * f_ast = fopen("ast.dot","w");
   printf("\n");
   printParseTree(P,pt);
-  printAST(AST,ast);
+  printAST(A,f_ast);
 
   fclose(pt);
-  fclose(ast);
+  fclose(f_ast);
   
     return 0;
 }
