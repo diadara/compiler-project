@@ -47,7 +47,7 @@ AST malloc_ast()
 {AST A;
   static int id;
    A=malloc(sizeof*A);
-  A->id = id;
+  A->id = id++;
    A->parent=NULL;
    int i;
    for(i=0;i<20;i++)
@@ -94,10 +94,38 @@ void  traverse_parsetree(parseTree P, symbol s,AST (*handler_function)(parseTree
     }
 }
 
+AST handle_id(parseTree PT,AST A)
+{
+  int i = 0;
+  while(A->child[i] != NULL) i++;
+  AST temp = malloc_ast();
+  temp->t = PT->t;
+   A->child[i] = temp;
+#ifdef DEBUG
+   printf("\nhandling %s %s %d to astnode: %d",symbolToStr(symbol(PT)), PT->t->lexeme, i,A->id);
+#endif
+
+   return A;
+}
+
+AST handle_fieldDefenition(parseTree PT, AST A)
+{
+#ifdef DEBUG
+  printf("\nhandling %s",symbolToStr(symbol(PT)));
+#endif
+  int i=0;
+    while(A->child[i] != NULL) i++;
+  A->child[i] = malloc_ast();
+  A->child[i]->t = PT->next[1]->next[0]->t;
+  traverse_parsetree(PT,TK_ID,handle_id,A->child[i]);
+
+  return A;  
+}
+
 AST handle_typedefinitions(parseTree PT, AST A)
 {
 #ifdef DEBUG
-  printf("handling %s",symbolToStr(symbol(PT)));
+  printf("\nhandling %s",symbolToStr(symbol(PT)));
 #endif
   int i=0;
   while(A->child[i] != NULL) i++;
@@ -105,9 +133,14 @@ AST handle_typedefinitions(parseTree PT, AST A)
   temp->t = PT->next[0]->t;
   temp->child[0] = malloc_ast();
   temp->child[0]->t = PT->next[1]->t;
+  temp->child[0]->child[0] = malloc_ast();
+  temp->child[0]->child[0]->t = malloc(sizeof(token));
+  temp->child[0]->child[0]->t->s = fieldDefinition_s;
+  traverse_parsetree(PT->next[2],fieldDefinition,handle_fieldDefenition,temp->child[0]->child[0]);
    A->child[i] = temp;
   return A;
 }
+
 
 AST createAST(parseTree T)
 {
@@ -124,9 +157,17 @@ AST createAST(parseTree T)
       A =  malloc_ast();
       copyPT_to_AST(T,A);
       traverse_parsetree(T,typeDefinition,handle_typedefinitions,A);
+      if(A->child[0] == NULL)
+        {
+          free(A);
+          A=NULL;
+        }
       break;
-      
-
+    case globalStatements:
+      /* A = malloc_ast(); */
+      /* copyPT_to_AST(T,A); */
+      /* traverse_parsetree(T,) */
+      break;
     }
   
 

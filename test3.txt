@@ -3,6 +3,12 @@ record complex
     var int y;
 end_record
 
+
+record rectangle
+var int height,weight;
+var int index;
+end_record
+
 global var record complex a;
 
 function complex_add

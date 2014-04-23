@@ -44,6 +44,7 @@ int main(int argc, char* argv[])
 
  ParseTable PT  = getParseTable();
 
+ 
 
  //printRule(G,PT.T[globalStatements - program][TK_MAIN]);
    parseTree P = parseInputSourceCode(fp, kt, G,&error);
