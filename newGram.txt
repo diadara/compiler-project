@@ -11,7 +11,7 @@ moreFields TK_EPS .
 primitiveDatatype TK_INT .
 primitiveDatatype TK_REAL .
 primitiveDatatype TK_CHAR .
-globalStatements globalDeclare globalAssign .
+globalStatements globalDeclare globalAssign globalStatements .
 globalStatements TK_EPS .
 globalDeclare TK_GLOBAL TK_VAR dataType TK_ID TK_SEM .
 globalAssign TK_ASSIGN TK_ID TK_ASSIGNOP var TK_SEM .

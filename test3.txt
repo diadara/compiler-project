@@ -9,7 +9,8 @@ var int height,weight;
 var int index;
 end_record
 
-global var record complex a;
+global var record rectangle g;
+global var record rectangle g2;
 
 function complex_add
     input[var record complex a, var record complex b]

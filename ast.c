@@ -108,6 +108,37 @@ AST handle_id(parseTree PT,AST A)
    return A;
 }
 
+AST handle_globalDeclare(parseTree PT,AST A)
+{
+
+#ifdef DEBUG
+  printf("\nhandling %s",symbolToStr(symbol(PT)));
+#endif
+ 
+  int i = 0;
+  while(A->child[i] != NULL) i++;
+  AST temp = malloc_ast();
+    
+  if(PT->next[2]->next[0]->t->s == constructedDatatype)
+    {
+      temp->t = PT->next[2]->next[0]->next[0]->t;
+      temp->child[0] = malloc_ast();
+      temp->child[0]->t = PT->next[2]->next[0]->next[1]->t;
+      temp->child[0]->child[0] = malloc_ast();
+      temp->child[0]->child[0]->t = PT->next[3]->t;
+
+#ifdef DEBUG
+      printf("\nhandling %s %s",PT->next[3]->t->lexeme, symbolToStr(PT->next[3]->t->s));
+#endif
+
+      A->child[i] = temp;
+    }
+  else
+    {
+
+    }
+  return A;
+}
 AST handle_fieldDefenition(parseTree PT, AST A)
 {
 #ifdef DEBUG
@@ -164,10 +195,27 @@ AST createAST(parseTree T)
         }
       break;
     case globalStatements:
-      /* A = malloc_ast(); */
-      /* copyPT_to_AST(T,A); */
-      /* traverse_parsetree(T,) */
+      A =  malloc_ast();
+      copyPT_to_AST(T,A);
+      traverse_parsetree(T,globalDeclare,handle_globalDeclare,A);
+      if(A->child[0] == NULL)
+        {
+          free(A);
+          A=NULL;
+        }
       break;
+    default:
+      A =  malloc_ast();
+      copyPT_to_AST(T,A);
+      fillchild(A,T);
+      if(A->child[0] == NULL)
+        {
+          free(A);
+          A=NULL;
+        }
+      break;
+      
+
     }
   
 

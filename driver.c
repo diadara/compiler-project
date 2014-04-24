@@ -18,13 +18,13 @@ int main(int argc, char* argv[])
     { printf("no input file given");
       exit(1);
     }
-  
-    
+
+
 
   keywordTable kt = createKeywordTable();
 
   FILE * g = fopen("newGram.txt","r");
-  
+
   if(g==NULL)
     {
         printf("Grammar file not found\n");
@@ -44,7 +44,7 @@ int main(int argc, char* argv[])
 
  ParseTable PT  = getParseTable();
 
- 
+
 
  //printRule(G,PT.T[globalStatements - program][TK_MAIN]);
    parseTree P = parseInputSourceCode(fp, kt, G,&error);
@@ -57,7 +57,7 @@ int main(int argc, char* argv[])
 
   fclose(pt);
   fclose(f_ast);
-  
+
     return 0;
 }
 
