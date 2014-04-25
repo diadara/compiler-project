@@ -3,7 +3,7 @@
 #include<stdio.h>
 
 
-#define symbol(T) (T->t->s)
+#define symbol(T) ((T)->t->s)
 #define nextsymbol(T,j)  (T->next[j]->t->s)
 
 
@@ -85,7 +85,13 @@ void fillchild(AST A, parseTree P)
 void  traverse_parsetree(parseTree P, symbol s,AST (*handler_function)(parseTree,AST), AST parent)
 {
   if(symbol(P) == s)
-    (*handler_function)(P,parent);
+    {
+#ifdef DEBUG
+      printf("\n traverse: found %s", symbolToStr(symbol(P)));
+#endif
+
+      (*handler_function)(P,parent);
+    }
   int i = 0;
   while(P->next[i])
     {
@@ -93,6 +99,26 @@ void  traverse_parsetree(parseTree P, symbol s,AST (*handler_function)(parseTree
       i++;
     }
 }
+
+AST handle_function(parseTree PT,AST A)
+{
+
+  A->child[0] = malloc_ast();
+  copyPT_to_AST(PT->next[2],A->child[0]);
+  fillchild(A->child[0],PT->next[2]); /* input */
+
+  A->child[1] = malloc_ast();
+  copyPT_to_AST(PT->next[3],A->child[1]);
+  fillchild(A->child[1],PT->next[3]); /* output */
+
+  A->child[2] = malloc_ast();
+  copyPT_to_AST(PT->next[4],A->child[2]);
+  fillchild(A->child[2],PT->next[4]); /* output */
+  
+
+   return A;
+}
+
 
 AST handle_id(parseTree PT,AST A)
 {
@@ -135,10 +161,14 @@ AST handle_globalDeclare(parseTree PT,AST A)
     }
   else
     {
-
+      temp->t = PT->next[2]->next[0]->next[0]->t;
+      temp->child[0] = malloc_ast();
+      temp->child[0]->t = PT->next[3]->t;
+  A->child[i] = temp;
     }
   return A;
 }
+
 AST handle_fieldDefenition(parseTree PT, AST A)
 {
 #ifdef DEBUG
@@ -203,19 +233,41 @@ AST createAST(parseTree T)
           free(A);
           A=NULL;
         }
+      /* A = malloc_ast(); */
+      /* copyPT_to_AST(T,A); */
+      /* traverse_parsetree(T,) */
       break;
-    default:
+    case function:
+      A =  malloc_ast();
+      copyPT_to_AST(T->next[1],A);
+#ifdef DEBUG
+      printf("\n in case function: handling %s", T->next[1]->t->lexeme);
+#endif
+
+        handle_function(T,A);
+      break;
+    case mainFunction:
       A =  malloc_ast();
       copyPT_to_AST(T,A);
+      A->child[0] = malloc_ast();
+      copyPT_to_AST(T->next[1],A->child[0]);
+      fillchild(A->child[0], T->next[1]);
+      break;
+    default:
+#ifdef DEBUG
+      printf("\n in case: handling %s", symbolToStr(symbol(T)));
+#endif
+      A =  malloc_ast();
+      copyPT_to_AST(T,A);
+      
       fillchild(A,T);
-      if(A->child[0] == NULL)
+      if(A->child[0] == NULL && !isTerminal(symbol(A)))
         {
           free(A);
           A=NULL;
         }
-      break;
-      
 
+      break;
     }
   
 
