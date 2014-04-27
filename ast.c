@@ -104,14 +104,17 @@ AST handle_function(parseTree PT,AST A)
 {
 
   A->child[0] = malloc_ast();
+  A->child[0]->parent = A;
   copyPT_to_AST(PT->next[2],A->child[0]);
   fillchild(A->child[0],PT->next[2]); /* input */
 
   A->child[1] = malloc_ast();
+    A->child[1]->parent = A;
   copyPT_to_AST(PT->next[3],A->child[1]);
   fillchild(A->child[1],PT->next[3]); /* output */
 
   A->child[2] = malloc_ast();
+    A->child[2]->parent = A;
   copyPT_to_AST(PT->next[4],A->child[2]);
   fillchild(A->child[2],PT->next[4]); /* output */
   
@@ -126,6 +129,7 @@ AST handle_id(parseTree PT,AST A)
   while(A->child[i] != NULL) i++;
   AST temp = malloc_ast();
   temp->t = PT->t;
+  temp->parent =A;
    A->child[i] = temp;
 #ifdef DEBUG
    printf("\nhandling %s %s %d to astnode: %d",symbolToStr(symbol(PT)), PT->t->lexeme, i,A->id);
@@ -149,8 +153,10 @@ AST handle_globalDeclare(parseTree PT,AST A)
     {
       temp->t = PT->next[2]->next[0]->next[0]->t;
       temp->child[0] = malloc_ast();
+      temp->child[0]->parent = temp;
       temp->child[0]->t = PT->next[2]->next[0]->next[1]->t;
       temp->child[0]->child[0] = malloc_ast();
+      temp->child[0]->child[0]->parent = temp->child[0];
       temp->child[0]->child[0]->t = PT->next[3]->t;
 
 #ifdef DEBUG
@@ -158,13 +164,16 @@ AST handle_globalDeclare(parseTree PT,AST A)
 #endif
 
       A->child[i] = temp;
+      temp->parent = A;
     }
   else
     {
       temp->t = PT->next[2]->next[0]->next[0]->t;
       temp->child[0] = malloc_ast();
+      temp->child[0]->parent = temp;
       temp->child[0]->t = PT->next[3]->t;
-  A->child[i] = temp;
+      A->child[i] = temp;
+      temp->parent = A;
     }
   return A;
 }
@@ -177,12 +186,33 @@ AST handle_fieldDefenition(parseTree PT, AST A)
   int i=0;
     while(A->child[i] != NULL) i++;
   A->child[i] = malloc_ast();
+  A->child[i]->parent =A ;
   A->child[i]->t = PT->next[1]->next[0]->t;
   traverse_parsetree(PT,TK_ID,handle_id,A->child[i]);
 
   return A;  
 }
 
+AST handle_morevariable(parseTree PT,AST A)
+{
+    
+  if(symbol(PT->next[0]) == TK_EPS)
+    A=NULL;
+  if(symbol(PT->next[0]) == variable)
+    {
+      if(symbol(PT->next[1]->next[0]) == arithmeticExpression)
+      A = createAST(PT->next[0]);
+      if(symbol(PT->next[1]->next[0]) == Operator)
+        {
+          A = malloc_ast();
+          A->t = PT->next[1]->next[0]->next[0]->t;
+          A->child[0] = createAST(PT->next[0]);
+          A->child[1] = createAST(PT->next[1]->next[1]);
+        }
+      
+    }
+  return A;
+}
 AST handle_typedefinitions(parseTree PT, AST A)
 {
 #ifdef DEBUG
@@ -253,9 +283,29 @@ AST createAST(parseTree T)
       copyPT_to_AST(T->next[1],A->child[0]);
       fillchild(A->child[0], T->next[1]);
       break;
+    case assignmentStmt:
+      A =  malloc_ast();
+      copyPT_to_AST(T->next[2],A);
+      A->child[0] = createAST(T->next[1]);
+      A->child[1] = createAST(T->next[3]);
+   
+      break;
+       case arithmeticExpression:
+#ifdef DEBUG
+      printf("\n in case of arithmetic: handling %s", symbolToStr(symbol(T)));
+#endif
+         A = handle_morevariable(T,A);
+         if(A != NULL)
+           if(A->child[0] == NULL)
+             A = NULL;
+         break;
+    case funCallStmt:
+      
     default:
 #ifdef DEBUG
       printf("\n in case: handling %s", symbolToStr(symbol(T)));
+      if(symbol(T) == arithmeticExpression)
+        printf("\n boo\n");
 #endif
       A =  malloc_ast();
       copyPT_to_AST(T,A);
