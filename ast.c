@@ -300,7 +300,18 @@ AST createAST(parseTree T)
              A = NULL;
          break;
     case funCallStmt:
-      
+      A = malloc_ast();
+      A->t = T->next[0]->t;
+      A->child[0] = malloc_ast();
+      A->child[0]->t = T->next[1]->t;
+      A->child[1] = malloc_ast();
+      A->child[1]->t = T->next[3]->t;
+      traverse_parsetree(T->next[3],TK_ID, handle_id,A->child[1]);
+
+      A->child[2] = malloc_ast();
+      A->child[2]->t = T->next[6]->t;
+      traverse_parsetree(T->next[6],TK_ID, handle_id,A->child[2]);
+      break;
     default:
 #ifdef DEBUG
       printf("\n in case: handling %s", symbolToStr(symbol(T)));
